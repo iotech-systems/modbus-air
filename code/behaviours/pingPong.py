@@ -54,7 +54,7 @@ class pingPong(genDo):
          print(f"\n\tNO_PONG: {pico_airid}\n")
          return False
       else:
-         print(f"rsp buff: {sendReceive.response_buffer}")
+         print(f"\n\trsp buff: {sendReceive.response_buffer}")
          if radioMsg.is_pong_good(pico_airid, ping_from, sendReceive.response_buffer):
             print(f"\n\tGOOD_PING_PONG: {pico_airid}\n")
             return True
