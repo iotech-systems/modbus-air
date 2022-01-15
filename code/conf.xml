@@ -39,7 +39,7 @@
                <arg name="delay" value="20s" />
             </args>
          </do>
-         <do index="4" action="READ_REGS">
+         <do index="4" action="READ_REGISTERS">
             <args>
                <arg name="" value="" />
             </args>

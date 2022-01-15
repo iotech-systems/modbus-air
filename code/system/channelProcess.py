@@ -4,6 +4,7 @@ import xml.etree.ElementTree as et
 from system.genProcess import genProcess
 from behaviours.datetimeBroadcaster import datetimeBroadcaster
 from behaviours.pingPong import pingPong
+from behaviours.readRegisters import readRegisters
 
 
 class channelProcess(genProcess):
@@ -30,6 +31,7 @@ class channelProcess(genProcess):
       behaviours = self.xml.findall("behaviour/do")
       for doxml in behaviours:
          self.__do__(doxml)
+      return 0
 
    def __do__(self, xml: et.Element):
       action = xml.attrib["action"]
@@ -41,5 +43,8 @@ class channelProcess(genProcess):
       elif action == "PING_PONG":
          pp: pingPong = pingPong(uart=self.uart, xmlconf=self.xml)
          pp.run()
+      elif action == "READ_REGISTERS":
+         rr: readRegisters = readRegisters(uart=self.uart, xmlconf=self.xml)
+         rr.run()
       else:
          pass
