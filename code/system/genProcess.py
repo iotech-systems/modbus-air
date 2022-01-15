@@ -23,6 +23,7 @@ class genProcess(multiprocessing.Process):
       arg = xml.find(xpath)
       val = arg.attrib["value"]
       delay = self.__get_delay__(val)
+      print(f"__sleep__: {delay}")
       time.sleep(delay)
 
    def __get_delay__(self, arg) -> int:
@@ -34,7 +35,6 @@ class genProcess(multiprocessing.Process):
       return delay
 
    def __try_create_uart__(self):
-      # if uart in conf.xml create on class level
       uxml: et.Element = self.xml.find("uart")
       if uxml is not None:
          dev = uxml.attrib["dev"]

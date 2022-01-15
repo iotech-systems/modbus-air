@@ -61,4 +61,5 @@ class uartSendReceive(object):
          self.ttl_timer.cancel()
          while self.uart.in_waiting > 0:
             self.__buff_out.extend(self.uart.read(1))
+            time.sleep(0.006)
          self.__doing = Doing.DONE

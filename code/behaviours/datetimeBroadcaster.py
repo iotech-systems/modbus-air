@@ -34,7 +34,7 @@ class datetimeBroadcaster(genDo):
                if i == (datetimeBroadcaster.PING_TRIES - 1):
                   airid = pico.attrib["airid"]
                   msg = f"unable to ping picobug: {airid}; tries: {i}"
-                  sysutils.send_email(msg)
+                  sysutils.send_email("OpenMMS Warning", msg)
       # -- end for each pico --
 
    def __ping_pico__(self, pico: et.Element):
