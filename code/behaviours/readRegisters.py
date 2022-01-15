@@ -60,9 +60,9 @@ class readRegisters(genDo):
          time.sleep(readRegisters.DO_TTL_SECS / 10)
          print("*", end="")
       # -- return --
-      if sndAckRecv.status == uartStatus.DONE and sendReceive.no_response:
+      """if sndAckRecv.status == uartStatus.DONE and sendReceive.no_response:
          print(f"\n\tNO_RESPONSE: {pico_airid}\n")
          return False
       else:
          print(f"rsp buff: {sendReceive.response_buffer}")
-         return True
+         return True"""

@@ -2,7 +2,7 @@
 import time
 import threading, serial
 from system.consts import *
-from system.uartRecieve import uartReceive, uartReceiveStatus
+from system.uartRecieve import uartReceive, uartStatus
 from radiolib.radioMsg import msgTypes
 
 
@@ -49,11 +49,11 @@ class uartSendAckReceive(object):
    def __rec_msg__(self, mtype: bytearray):
       ur: uartReceive = uartReceive(self.uart, 1)
       ur.do()
-      while ur.status != uartReceiveStatus.DONE:
+      while ur.status != uartStatus.DONE:
          print(ur.status)
          time.sleep(0.02)
-      if ur.status == uartReceiveStatus.TIMEOUT:
+      if ur.status == uartStatus.TIMEOUT:
          pass
-      if ur.status == uartReceiveStatus.DONE:
+      if ur.status == uartStatus.DONE:
          print(f"__rec_msg__: {ur.buff_out}")
       # -- check msg type --
