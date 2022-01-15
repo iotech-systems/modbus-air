@@ -46,11 +46,12 @@ class pingPong(genDo):
       sendReceive: uartSendReceive = uartSendReceive(self.uart, ping
          , pingPong.PING_TTL_SECS)
       sendReceive.do()
-      while sendReceive.doing == Doing.WAITING:
+      while sendReceive.status not in (uartStatus.TIMEOUT, uartStatus.DONE):
+         print(f"status: {sendReceive.status}")
          time.sleep(pingPong.PING_TTL_SECS / 10)
          print("*", end="")
       # -- return --
-      if sendReceive.doing == Doing.DONE and sendReceive.no_response:
+      if sendReceive.status == uartStatus.TIMEOUT:
          print(f"\n\tNO_PONG: {pico_airid}\n")
          return False
       else:

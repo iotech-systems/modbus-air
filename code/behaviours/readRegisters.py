@@ -5,7 +5,7 @@ from radiolib.radioMsg import *
 from system.genDo import genDo
 import xml.etree.ElementTree as et
 from system.consts import *
-from system.uartSendReceive import uartSendReceive
+from system.uartSendAckReceive import uartSendAckReceive
 from system.sysutils import sysutils
 
 
@@ -54,13 +54,13 @@ class readRegisters(genDo):
       barr = f"@{adr}".encode()
       rnrs: bytearray = radioMsg.new_msg(pico_airid, read_from, msgid
          , msgTypes.READ_NODE_REGS, bytearray(barr))
-      sendReceive: uartSendReceive = uartSendReceive(self.uart, rnrs, readRegisters.DO_TTL_SECS)
-      sendReceive.do()
-      while sendReceive.doing == Doing.WAITING:
+      sndAckRecv: uartSendAckReceive = uartSendAckReceive(self.uart, rnrs, readRegisters.DO_TTL_SECS)
+      sndAckRecv.do()
+      while sndAckRecv.status == uartStatus.WAITING:
          time.sleep(readRegisters.DO_TTL_SECS / 10)
          print("*", end="")
       # -- return --
-      if sendReceive.doing == Doing.DONE and sendReceive.no_response:
+      if sndAckRecv.status == uartStatus.DONE and sendReceive.no_response:
          print(f"\n\tNO_RESPONSE: {pico_airid}\n")
          return False
       else:

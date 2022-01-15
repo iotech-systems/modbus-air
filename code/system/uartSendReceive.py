@@ -6,61 +6,65 @@ from system.consts import *
 
 class uartSendReceive(object):
 
-   def __init__(self, uart: serial.Serial, barr: bytearray, ttl=0):
+   def __init__(self, uart: serial.Serial, barr: bytearray, timeout_secs=1):
       self.uart = uart
       self.barr = barr
-      self.ttl = ttl
+      self.timeout_secs = timeout_secs
       self.do_thread: threading.Thread = None
-      self.ttl_timer: threading.Timer
-      self.ttl_flag = False
-      self.__doing = Doing.WAITING
-      self.__no_resp = False
-      self.__buff_out: bytearray = bytearray()
-      self.__chr_dly_secs = round(((1 / (self.uart.baudrate / 11)) + 0.001), 4)
+      self.__status = uartStatus.READY
+      self.__rsp_buffer: bytearray = bytearray()
+      self.__chr_dly_secs = self.__char_delay__()
+      self.on_response = None
+      self.on_timeout = None
 
    def do(self):
+      self.uart.reset_output_buffer()
+      self.uart.reset_input_buffer()
       self.do_thread = threading.Thread(target=self.__do_thread__)
       self.do_thread.start()
 
    @property
-   def doing(self) -> Doing:
-      return self.__doing
-
-   @property
-   def no_response(self) -> bool:
-      return self.__no_resp
+   def status(self) -> uartStatus:
+      return self.__status
 
    @property
    def response_buffer(self) -> bytearray:
-      return self.__buff_out
+      return self.__rsp_buffer
 
    def __do_thread__(self):
+      # -- send --
+      print(f"sending: {self.barr}")
+      self.uart.write(self.barr)
       # -- callback --
       ontimer_flag = False
-      def ontimer():
-         print("\n\t-- ontimer --")
+      def on_ttl_timeout():
+         print("\n\t-- on_ttl_timeout --\n")
          nonlocal ontimer_flag
          ontimer_flag = True
       # -- end callback --
-      self.uart.reset_output_buffer()
-      self.uart.reset_input_buffer()
-      print(f"sending: {self.barr}")
-      self.uart.write(self.barr)
-      self.ttl_timer = threading.Timer(interval=self.ttl, function=ontimer, args=())
+      self.ttl_timer = threading.Timer(interval=self.timeout_secs, function=on_ttl_timeout)
       self.ttl_timer.start()
-      # -- wait on feedback --
+      # -- wait on response --
       while self.uart.in_waiting == 0:
          if ontimer_flag:
             break
-         time.sleep(0.02)
+         time.sleep(self.timeout_secs / 16)
       # -- run --
-      if self.uart.in_waiting == 0 and ontimer_flag:
-         self.__doing = Doing.DONE
-         self.__no_resp = True
+      if ontimer_flag:
+         self.__status = uartStatus.TIMEOUT
+         if self.on_timeout is not None:
+            self.on_timeout()
       else:
-         # -- got response in ttl --
+         # -- got rsp b4 ttl out --
          self.ttl_timer.cancel()
          while self.uart.in_waiting > 0:
-            self.__buff_out.extend(self.uart.read(1))
+            self.__rsp_buffer.extend(self.uart.read(1))
             time.sleep(self.__chr_dly_secs)
-         self.__doing = Doing.DONE
+         self.__status = uartStatus.DONE
+         if self.on_response is not None:
+            self.on_response(self.__rsp_buffer)
+
+   def __char_delay__(self):
+      BYTEBITS = 11
+      OFFSET = 0.001
+      return round(((1 / (self.uart.baudrate / BYTEBITS)) + OFFSET), 4)

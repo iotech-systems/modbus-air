@@ -1,12 +1,8 @@
 
-import time
-import typing as t, serial
+import time, serial, datetime
 from radiolib.radioMsg import *
 from system.genDo import genDo
 import xml.etree.ElementTree as et
-from system.consts import *
-from system.uartSendReceive import uartSendReceive
-from system.sysutils import sysutils
 
 
 class datetimeBroadcaster(genDo):
@@ -21,9 +17,14 @@ class datetimeBroadcaster(genDo):
       self.xmlconf: et.Element = kwargs["xmlconf"]
 
    def run(self, **kwargs):
-      print("datetimeBroadcaster run")
       msgid = msgIDGen.get_id()
-      dts = bytearray("20220122T092244".encode())
+      dts = self.__dts__()
       barr: bytearray = radioMsg.new_msg(0xff, 0x00, msgid, msgTypes.SET_DATETIME, dts)
       cnt = self.uart.write(barr)
       print(f"\n\tbytes sent: {cnt}")
+
+   def __dts__(self) -> bytearray:
+      t = datetime.datetime.today()
+      dts = "%04d%02d%02dT%02d%02d%02d" \
+            % (t.year, t.month, t.day, t.hour, t.minute, t.second)
+      return bytearray(dts.encode())
