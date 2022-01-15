@@ -39,7 +39,7 @@ class channelProcess(genProcess):
       elif action == "SLEEP":
          self.__sleep__(xml)
       elif action == "PING_PONG":
-         pp: pingPong = pingPong()
+         pp: pingPong = pingPong(uart=self.uart, xmlconf=self.xml)
          pp.run()
       else:
          pass
