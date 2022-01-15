@@ -1,4 +1,4 @@
-
+import math
 import time
 import threading, serial
 from system.consts import *
@@ -16,6 +16,7 @@ class uartSendReceive(object):
       self.__doing = Doing.WAITING
       self.__no_resp = False
       self.__buff_out: bytearray = bytearray()
+      self.__chr_dly = math.ceil((1 / (self.uart.baudrate / 11)) * 1000)
 
    def do(self):
       self.do_thread = threading.Thread(target=self.__do_thread__)
@@ -61,5 +62,5 @@ class uartSendReceive(object):
          self.ttl_timer.cancel()
          while self.uart.in_waiting > 0:
             self.__buff_out.extend(self.uart.read(1))
-            time.sleep(0.006)
+            time.sleep(self.__chr_dly)
          self.__doing = Doing.DONE

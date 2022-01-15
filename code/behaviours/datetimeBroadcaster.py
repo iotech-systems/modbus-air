@@ -46,9 +46,9 @@ class datetimeBroadcaster(genDo):
       sendReceive.do()
       while sendReceive.doing == Doing.WAITING:
          time.sleep(datetimeBroadcaster.PING_TTL_SECS / 10)
-         print("sr is doing...")
+         print("*", end="")
       if sendReceive.doing == Doing.DONE and sendReceive.no_response:
-         print("no response...")
+         print(f"\n\tNO_RESPONSE: {pico_airid}\n")
       else:
          print(sendReceive.response_buffer)
       print("xxxxx")
