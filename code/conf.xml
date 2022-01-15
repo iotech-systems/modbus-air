@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<conf>
+   <process id="100" procname="omms100" runfreq="2m" class="channelProcess.channelProcess">
+      <uart dev="/dev/ttyUSB0" setpin="4" baud="2400" />
+      <picobugs>
+         <picobug airid="0xa1" token="???">
+            <modbus>
+               <node address="36" model="orno516" />
+               <node address="34" model="orno516" />
+               <node address="12" model="orno504" />
+            </modbus>
+         </picobug>
+         <picobug airid="0xa4" token="???">
+            <modbus>
+               <node address="12" model="orno504" />
+            </modbus>
+         </picobug>
+      </picobugs>
+      <behaviour>
+         <do index="0" action="BROADCAST_DATETIME">
+            <args>
+               <arg name="" value="" />
+               <arg name="" value="" />
+               <arg name="" value="" />
+            </args>
+         </do>
+         <do index="1" action="SLEEP">
+            <args>
+               <arg name="delay" value="2m" />
+            </args>
+         </do>
+         <do index="2" action="PING">
+            <args>
+               <arg name="delay" value="2m" />
+            </args>
+         </do>
+      </behaviour>
+   </process>
+   <process id="100" class="demoProcess.demoProcess">
+      <uart dev="/dev/ttyUSB0" setpin="4" baud="2400" />
+      <picobugs>
+         <picobug airid="0x0a" token="???">
+            <modbus>
+               <node address="36" model="orno516" />
+               <node address="34" model="orno516" />
+               <node address="12" model="orno504" />
+            </modbus>
+         </picobug>
+      </picobugs>
+      <behaviour>
+         <do index="0" action="BROADCAST_DATETIME">
+            <args>
+               <arg name="" value="" />
+               <arg name="" value="" />
+               <arg name="" value="" />
+            </args>
+         </do>
+         <do index="1" action="SLEEP">
+            <args>
+               <arg name="delay" value="2m" />
+            </args>
+         </do>
+         <do index="2" action="PING">
+            <args>
+               <arg name="delay" value="2m" />
+            </args>
+         </do>
+      </behaviour>
+   </process>
+</conf>
