@@ -21,7 +21,7 @@ class datetimeBroadcaster(genDo):
       dts = self.__dts__()
       barr: bytearray = radioMsg.new_msg(0xff, 0x00, msgid, msgTypes.SET_DATETIME, dts)
       cnt = self.uart.write(barr)
-      print(f"\n\tbytes sent: {cnt} :: STDT sent: {barr}")
+      print(f"\n\tbytes sent: {cnt}\n\tSTDT: {barr}")
 
    def __dts__(self) -> bytearray:
       t = datetime.datetime.today()
