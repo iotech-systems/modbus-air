@@ -51,7 +51,7 @@ class pingPong(genDo):
          print("*", end="")
       # -- return --
       if sendReceive.doing == Doing.DONE and sendReceive.no_response:
-         print(f"\n\tNO_RESPONSE_FROM_PICO: {pico_airid}\n")
+         print(f"\n\tNO_PONG: {pico_airid}\n")
          return False
       else:
          print(f"rsp buff: {sendReceive.response_buffer}")

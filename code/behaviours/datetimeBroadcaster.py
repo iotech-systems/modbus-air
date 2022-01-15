@@ -22,4 +22,8 @@ class datetimeBroadcaster(genDo):
 
    def run(self, **kwargs):
       print("datetimeBroadcaster run")
-      time.sleep(2)
+      msgid = msgIDGen.get_id()
+      dts = bytearray("20220122T092244".encode())
+      barr: bytearray = radioMsg.new_msg(0xff, 0x00, msgid, msgTypes.SET_DATETIME, dts)
+      cnt = self.uart.write(barr)
+      print(f"\n\tbytes sent: {cnt}")
