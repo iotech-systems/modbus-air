@@ -3,6 +3,7 @@ import time, setproctitle
 import xml.etree.ElementTree as et
 from system.genProcess import genProcess
 from behaviours.datetimeBroadcaster import datetimeBroadcaster
+from behaviours.pingPong import pingPong
 
 
 class channelProcess(genProcess):
@@ -37,7 +38,8 @@ class channelProcess(genProcess):
          dtb.run()
       elif action == "SLEEP":
          self.__sleep__(xml)
-      elif action == "":
-         pass
+      elif action == "PING_PONG":
+         pp: pingPong = pingPong()
+         pp.run()
       else:
          pass

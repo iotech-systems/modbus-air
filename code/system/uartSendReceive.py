@@ -1,4 +1,4 @@
-import math
+
 import time
 import threading, serial
 from system.consts import *
@@ -38,7 +38,7 @@ class uartSendReceive(object):
       # -- callback --
       ontimer_flag = False
       def ontimer():
-         print("-- ontimer --")
+         print("\n\t-- ontimer --")
          nonlocal ontimer_flag
          ontimer_flag = True
       # -- end callback --

@@ -17,21 +17,26 @@
          </picobug>
       </picobugs>
       <behaviour>
-         <do index="0" action="BROADCAST_DATETIME">
+         <do index="0" action="PING_PONG">
+            <args>
+               <arg name="" value="" />
+            </args>
+         </do>
+         <do index="1" action="BROADCAST_DATETIME">
             <args>
                <arg name="" value="" />
                <arg name="" value="" />
                <arg name="" value="" />
             </args>
          </do>
-         <do index="1" action="SLEEP">
+         <do index="2" action="SLEEP">
             <args>
                <arg name="delay" value="2m" />
             </args>
          </do>
-         <do index="2" action="PING">
+         <do index="3" action="READ_REGS">
             <args>
-               <arg name="delay" value="2m" />
+               <arg name="" value="" />
             </args>
          </do>
       </behaviour>
