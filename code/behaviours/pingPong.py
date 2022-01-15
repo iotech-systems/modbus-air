@@ -38,7 +38,7 @@ class pingPong(genDo):
                   sysutils.send_email("OpenMMS Warning", msg)
       # -- end for each pico --
 
-   def __ping_pico__(self, pico: et.Element):
+   def __ping_pico__(self, pico: et.Element) -> bool:
       ping_from: int = 0x00
       tmp = pico.attrib["airid"]
       pico_airid = int(tmp, 16) if tmp.startswith("0x") else int(tmp)
@@ -49,9 +49,15 @@ class pingPong(genDo):
       while sendReceive.doing == Doing.WAITING:
          time.sleep(pingPong.PING_TTL_SECS / 10)
          print("*", end="")
+      # -- return --
       if sendReceive.doing == Doing.DONE and sendReceive.no_response:
          print(f"\n\tNO_RESPONSE_FROM_PICO: {pico_airid}\n")
+         return False
       else:
          print(f"rsp buff: {sendReceive.response_buffer}")
          if radioMsg.is_pong_good(pico_airid, ping_from, sendReceive.response_buffer):
             print(f"\n\t good ping -> pong: {pico_airid}")
+            return True
+         else:
+            return False
+      # -- the end --
