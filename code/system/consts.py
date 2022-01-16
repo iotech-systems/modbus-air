@@ -15,3 +15,8 @@ class uartStatus(object):
    TIMEOUT = 256
    READING = 512
 
+
+class xpaths(object):
+
+   PICOBUGS_PICOBUG = "picobugs/picobug"
+   MODBUS_NODE = "modbus/node"

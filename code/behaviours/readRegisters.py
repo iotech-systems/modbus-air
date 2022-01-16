@@ -5,7 +5,7 @@ from radiolib.radioMsg import *
 from system.genDo import genDo
 import xml.etree.ElementTree as et
 from system.consts import *
-from system.uartSendAckReceive import uartSendAckReceive
+from system.uartSendReceive import uartSendReceive, uartStatus
 from system.sysutils import sysutils
 
 
@@ -25,8 +25,7 @@ class readRegisters(genDo):
 
    def run(self, **kwargs):
       print("\n\treadRegisters\n")
-      xpath = "picobugs/picobug"
-      picos: t.List[et.Element] = self.xmlconf.findall(xpath)
+      picos: t.List[et.Element] = self.xmlconf.findall(xpaths.PICOBUGS_PICOBUG)
       # -- for each pico --
       for pico in picos:
          for i in range(0, readRegisters.DO_TRIES):
@@ -43,7 +42,7 @@ class readRegisters(genDo):
       ping_from: int = 0x00
       tmp = pico.attrib["airid"]
       pico_airid = int(tmp, 16) if tmp.startswith("0x") else int(tmp)
-      pico_modbus_nodes = pico.findall("modbus/node")
+      pico_modbus_nodes = pico.findall(xpaths.MODBUS_NODE)
       for mb_node in pico_modbus_nodes:
          self.__read_each_pico_node__(pico_airid, mb_node)
 
@@ -54,15 +53,29 @@ class readRegisters(genDo):
       barr = f"@{adr}".encode()
       rnrs: bytearray = radioMsg.new_msg(pico_airid, read_from, msgid
          , msgTypes.READ_NODE_REGS, bytearray(barr))
-      sndAckRecv: uartSendAckReceive = uartSendAckReceive(self.uart, rnrs, readRegisters.DO_TTL_SECS)
-      sndAckRecv.do()
-      while sndAckRecv.status == uartStatus.WAITING:
-         time.sleep(readRegisters.DO_TTL_SECS / 10)
+      # -- will catch ack first --
+      sndRecv: uartSendReceive = uartSendReceive(self.uart, rnrs, 1)
+      sndRecv.do()
+      self.__await_ack__(sndRecv)
+      time.sleep_ms(20)
+      self.__await_rsp__(sndRecv)
+
+   def __await_ack__(self, sndRecv: uartSendReceive):
+      while sndRecv.status not in (uartStatus.TIMEOUT, uartStatus.DONE):
+         time.sleep(readRegisters.DO_TTL_SECS / 8)
          print("*", end="")
-      # -- return --
-      """if sndAckRecv.status == uartStatus.DONE and sendReceive.no_response:
-         print(f"\n\tNO_RESPONSE: {pico_airid}\n")
-         return False
-      else:
-         print(f"rsp buff: {sendReceive.response_buffer}")
-         return True"""
+      if sndRecv.status == uartStatus.TIMEOUT:
+         pass
+      if sndRecv.status == uartStatus.DONE:
+         ack: bytearray = sndRecv.response_buffer
+         print(f"ACK: {ack}")
+
+   def __await_rsp__(self, sndRecv: uartSendReceive):
+      while sndRecv.status not in (uartStatus.TIMEOUT, uartStatus.DONE):
+         time.sleep(readRegisters.DO_TTL_SECS / 8)
+         print("*", end="")
+      if sndRecv.status == uartStatus.TIMEOUT:
+         pass
+      if sndRecv.status == uartStatus.DONE:
+         rsp: bytearray = sndRecv.response_buffer
+         print(f"RSP: {rsp}")
