@@ -58,6 +58,7 @@ class readRegisters(genDo):
          accu_bag.append(rs)
          time.sleep(1)
       # -- post picobug scan --
+      print(accu_bag)
 
    def __read_each_modbus_node__(self, pico_airid, mb_node: et.Element) -> readResults:
       read_from = 0x00
@@ -71,8 +72,7 @@ class readRegisters(genDo):
       first_ack_secs = 2
       print(f"\t\t-> qry: @{pico_airid} + {node_adr}")
       sndRecv: uartSendReceive = uartSendReceive(self.uart, rnrs, first_ack_secs)
-      sndRecv.send()
-      sndRecv.do()
+      sndRecv.do(with_snd=False)
       # -- wait for ack from picobug --
       sndRecv.await_ack()
       rs.rsp_barr = sndRecv.response_buffer
