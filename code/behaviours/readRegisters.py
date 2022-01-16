@@ -5,6 +5,7 @@ from radiolib.radioMsg import *
 from system.genDo import genDo
 import xml.etree.ElementTree as et
 from system.consts import *
+from system.uartRecieve import uartReceive
 from system.uartSendReceive import uartSendReceive, uartStatus
 from system.sysutils import sysutils
 
@@ -77,10 +78,17 @@ class readRegisters(genDo):
       sndRecv.await_ack()
       # -- this buff should ba ack msg --
       rs.rsp_barr = sndRecv.response_buffer
-      if radioMsg.is_good_ack(pico_airid, msgid, rs.rsp_barr):
-         print(f"GOOD_ACK: {pico_airid} / {msgid}")
-      else:
+      if not radioMsg.is_good_ack(pico_airid, msgid, rs.rsp_barr):
          print("BAD_ACK")
+         rs.rsp_code = 1
+         return rs
+      # -- good ack --
+      print(f"GOOD_ACK: {pico_airid} / {msgid}")
+      ur: uartReceive = uartReceive(uart=self.uart, ttl=2)
+      ur.do()
+      while ur.status not in (uartStatus.TIMEOUT, uartStatus.DONE):
+         time.sleep(0.01)
+      print(f"buffout: {ur.buff_out}")
       return rs
 
    def __await_ack__(self, sndRecv: uartSendReceive):
