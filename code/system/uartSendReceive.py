@@ -38,7 +38,7 @@ class uartSendReceive(object):
          :return:
       """
       while self.status not in (uartStatus.TIMEOUT, uartStatus.DONE):
-         time.sleep(0.001)
+         time.sleep(0.01)
       if self.status == uartStatus.TIMEOUT:
          print("\tACK_TIMEOUT_REACHED")
       if self.status == uartStatus.DONE:
