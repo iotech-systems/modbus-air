@@ -1,5 +1,5 @@
 
-import time, serial, datetime
+import pytz, serial, datetime
 from radiolib.radioMsg import *
 from system.genDo import genDo
 import xml.etree.ElementTree as et
@@ -21,10 +21,10 @@ class datetimeBroadcaster(genDo):
       dts = self.__dts__()
       barr: bytearray = radioMsg.new_msg(0xff, 0x00, msgid, msgTypes.SET_DATETIME, dts)
       cnt = self.uart.write(barr)
-      print(f"\n\tbytes sent: {cnt}\n\tSTDT: {barr}")
+      print(f"\n\tSTDT: {barr}\n\tbytes sent: {cnt}")
 
    def __dts__(self) -> bytearray:
-      t = datetime.datetime.today()
+      t = datetime.datetime.now(tz=pytz.UTC)
       dts = "%04d%02d%02dT%02d%02d%02d" \
             % (t.year, t.month, t.day, t.hour, t.minute, t.second)
       return bytearray(dts.encode())
