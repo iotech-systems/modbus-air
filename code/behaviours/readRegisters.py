@@ -68,12 +68,12 @@ class readRegisters(genDo):
       rnrs: bytearray = radioMsg.new_msg(pico_airid, read_from, msgid
          , msgTypes.READ_NODE_REGS, bytearray(node_adr.encode()))
       # -- will catch ack first --
-      ttl_ack_secs = 1
+      first_ack_secs = 2
       print(f"\t\t-> qry: @{pico_airid} + {node_adr}")
-      sndRecv: uartSendReceive = uartSendReceive(self.uart, rnrs, ttl_ack_secs)
+      sndRecv: uartSendReceive = uartSendReceive(self.uart, rnrs, first_ack_secs)
       sndRecv.do()
       # -- wait for ack from picobug --
-      sndRecv.await_ack(ack_timeout_secs=1)
+      sndRecv.await_ack()
       rs.rsp_barr = sndRecv.response_buffer
       return rs
 

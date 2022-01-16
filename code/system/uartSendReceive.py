@@ -31,7 +31,7 @@ class uartSendReceive(object):
    def response_buffer(self) -> bytearray:
       return self.__rsp_buffer
 
-   def await_ack(self, ack_timeout_secs: int = 1):
+   def await_ack(self, ack_timeout_secs: float = 0.01):
       while self.status not in (uartStatus.TIMEOUT, uartStatus.DONE):
          time.sleep(ack_timeout_secs/8)
          print(f"*{self.status};", end="")
@@ -57,7 +57,7 @@ class uartSendReceive(object):
       while self.uart.in_waiting == 0:
          if ontimer_flag:
             break
-         time.sleep(self.timeout_secs / 16)
+         time.sleep(self.timeout_secs/8)
       # -- run --
       if ontimer_flag:
          self.__status = uartStatus.TIMEOUT
