@@ -7,7 +7,6 @@ import xml.etree.ElementTree as et
 from system.consts import *
 from system.uartRecieve import uartReceive
 from system.uartSendReceive import uartSendReceive, uartStatus
-from system.sysutils import sysutils
 
 
 class readResults(object):
@@ -34,20 +33,16 @@ class readRegisters(genDo):
          raise ValueError("MissingXMLCONF")
       self.xmlconf: et.Element = kwargs["xmlconf"]
 
-   """
-      needs to be redone ... do it as:
-         create a list of all pics + nodes on it ... as simple list then
-         run over the list in a single for loop ....
-   """
    def run(self, **kwargs):
       print("\n\treadRegisters\n")
       picos: t.List[et.Element] = self.xmlconf.findall(xpaths.PICOBUGS_PICOBUG)
       # -- for each pico in air channel --
       for pico in picos:
-         self.__qry_picobug__(pico)
+         rset = self.__qry_picobug__(pico)
+         self.__process_results__(rset)
       # -- end for each pico --
 
-   def __qry_picobug__(self, pico: et.Element):
+   def __qry_picobug__(self, pico: et.Element) -> t.List[readResults]:
       tmp = pico.attrib["airid"]
       pico_airid = int(tmp, 16) if tmp.startswith("0x") else int(tmp)
       pico_modbus_nodes = pico.findall(xpaths.MODBUS_NODE)
@@ -59,7 +54,7 @@ class readRegisters(genDo):
          accu_bag.append(rs)
          time.sleep(1)
       # -- post picobug scan --
-      print(accu_bag)
+      return accu_bag
 
    def __read_each_modbus_node__(self, pico_airid, mb_node: et.Element) -> readResults:
       read_from = 0x00
@@ -83,31 +78,15 @@ class readRegisters(genDo):
          rs.rsp_code = 1
          return rs
       # -- good ack --
-      print(f"GOOD_ACK: {pico_airid} / {msgid}")
+      print(f"GOOD_ACK: {pico_airid}/{msgid}")
       ur: uartReceive = uartReceive(uart=self.uart, ttl=2)
       ur.do()
       while ur.status not in (uartStatus.TIMEOUT, uartStatus.DONE):
          time.sleep(0.01)
-      print(f"buffout: {ur.buff_out}")
+      print(f"RSP: {ur.buff_out}")
       return rs
 
-   def __await_ack__(self, sndRecv: uartSendReceive):
-      while sndRecv.status not in (uartStatus.TIMEOUT, uartStatus.DONE):
-         time.sleep(readRegisters.DO_TTL_SECS / 8)
-         print(f"*{sndRecv.status};", end="")
-      if sndRecv.status == uartStatus.TIMEOUT:
-         pass
-      if sndRecv.status == uartStatus.DONE:
-         ack: bytearray = sndRecv.response_buffer
-         print(f"ACK: {ack}")
-
-   def __await_rsp__(self, sndRecv: uartSendReceive):
-      while sndRecv.status not in (uartStatus.TIMEOUT, uartStatus.DONE):
-         time.sleep(readRegisters.DO_TTL_SECS / 8)
-         print("*", end="")
-      if sndRecv.status == uartStatus.TIMEOUT:
-         pass
-      if sndRecv.status == uartStatus.DONE:
-         rsp: bytearray = sndRecv.response_buffer
-         print(f"RSP: {rsp}")
-
+   def __process_results__(self, rset: t.List[readResults]):
+      print("\n\t[__process_results__]\n")
+      for item in rset:
+         print(f"RSP: {item.rsp_barr}")
