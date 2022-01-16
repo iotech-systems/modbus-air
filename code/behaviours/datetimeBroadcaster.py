@@ -26,5 +26,5 @@ class datetimeBroadcaster(genDo):
    def __dts__(self) -> bytearray:
       t = datetime.datetime.now(tz=pytz.UTC)
       dts = "%04d%02d%02dT%02d%02d%02dUTC" \
-            % ((t.year + 1), t.month, t.day, t.hour, t.minute, t.second)
+            % (t.year, t.month, t.day, t.hour, t.minute, t.second)
       return bytearray(dts.encode())
