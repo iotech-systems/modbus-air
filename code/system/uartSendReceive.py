@@ -31,14 +31,17 @@ class uartSendReceive(object):
    def response_buffer(self) -> bytearray:
       return self.__rsp_buffer
 
-   def await_ack(self, ack_timeout_secs: float = 0.01):
+   def await_ack(self):
+      """
+         this will simply check if the 1st msg coming from picobug is MACK
+         :return:
+      """
       while self.status not in (uartStatus.TIMEOUT, uartStatus.DONE):
-         time.sleep(ack_timeout_secs/8)
-         print(f"*{self.status};", end="")
+         time.sleep(0.001)
       if self.status == uartStatus.TIMEOUT:
-         print("ACK_TIMEOUT_REACHED")
+         print("\tACK_TIMEOUT_REACHED")
       if self.status == uartStatus.DONE:
-         print(f"ACK: {self.response_buffer}")
+         print(f"\n\tACK: {self.response_buffer}")
 
    def __do_thread__(self):
       # -- send --
