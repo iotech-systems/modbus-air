@@ -52,6 +52,7 @@ class readRegisters(genDo):
       pico_modbus_nodes = pico.findall(xpaths.MODBUS_NODE)
       accu_bag: t.List[readResults] = []
       # -- qry each node on the picobug --
+      print(f"\n\t[qry picobug: {pico_airid}]\n")
       for mb_node in pico_modbus_nodes:
          rs: readResults = self.__read_each_modbus_node__(pico_airid, mb_node)
          accu_bag.append(rs)
@@ -68,6 +69,7 @@ class readRegisters(genDo):
          , msgTypes.READ_NODE_REGS, bytearray(node_adr.encode()))
       # -- will catch ack first --
       ttl_ack_secs = 1
+      print(f"\t\t-> qry: @{pico_airid} + {node_adr}")
       sndRecv: uartSendReceive = uartSendReceive(self.uart, rnrs, ttl_ack_secs)
       sndRecv.do()
       # -- wait for ack from picobug --
