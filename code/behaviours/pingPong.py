@@ -45,7 +45,8 @@ class pingPong(genDo):
       ping: bytearray = radioMsg.ping_msg(pico_airid, ping_from)
       sendReceive: uartSendReceive = uartSendReceive(self.uart, ping
          , pingPong.PING_TTL_SECS)
-      sendReceive.do()
+      # -- send & do --
+      sendReceive.do(with_snd=True)
       while sendReceive.status not in (uartStatus.TIMEOUT, uartStatus.DONE):
          time.sleep(pingPong.PING_TTL_SECS / 8)
          print(f"*{sendReceive.status};", end="")

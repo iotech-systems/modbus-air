@@ -9,6 +9,7 @@ class uartSendReceive(object):
    def __init__(self, uart: serial.Serial, barr: bytearray, timeout_secs=1):
       self.uart = uart
       self.barr = barr
+      self.with_send = True
       self.timeout_secs = timeout_secs
       self.do_thread: threading.Thread = None
       self.__status = uartStatus.READY
@@ -16,10 +17,10 @@ class uartSendReceive(object):
       self.__chr_dly_secs = self.__char_delay__()
       self.on_response = None
       self.on_timeout = None
+      self.__clr_uart__()
 
-   def do(self):
-      self.uart.reset_output_buffer()
-      self.uart.reset_input_buffer()
+   def do(self, with_snd: bool = True):
+      self.with_send = with_snd
       self.do_thread = threading.Thread(target=self.__do_thread__)
       self.do_thread.start()
 
@@ -43,10 +44,14 @@ class uartSendReceive(object):
       if self.status == uartStatus.DONE:
          print(f"\n\tACK: {self.response_buffer}")
 
-   def __do_thread__(self):
-      # -- send --
+   def send(self):
       print(f"sending: {self.barr}")
       self.uart.write(self.barr)
+
+   def __do_thread__(self):
+      # -- with send --
+      if self.with_send:
+         self.send()
       # -- callback --
       ontimer_flag = False
       def on_ttl_timeout():
@@ -80,3 +85,8 @@ class uartSendReceive(object):
       BYTEBITS = 11
       OFFSET = 0.001
       return round(((1 / (self.uart.baudrate / BYTEBITS)) + OFFSET), 4)
+
+   def __clr_uart__(self):
+      if self.uart is not None:
+         self.uart.reset_output_buffer()
+         self.uart.reset_input_buffer()
