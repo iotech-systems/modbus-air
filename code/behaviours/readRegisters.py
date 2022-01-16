@@ -75,7 +75,12 @@ class readRegisters(genDo):
       sndRecv.do(with_snd=True)
       # -- wait for ack from picobug --
       sndRecv.await_ack()
+      # -- this buff should ba ack msg --
       rs.rsp_barr = sndRecv.response_buffer
+      if radioMsg.is_good_ack(pico_airid, msgid, rs.rsp_barr):
+         print(f"GOOD_ACK: {pico_airid} / {msgid}")
+      else:
+         print("BAD_ACK")
       return rs
 
    def __await_ack__(self, sndRecv: uartSendReceive):
