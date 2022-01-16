@@ -44,7 +44,10 @@ class readRegisters(genDo):
       pico_airid = int(tmp, 16) if tmp.startswith("0x") else int(tmp)
       pico_modbus_nodes = pico.findall(xpaths.MODBUS_NODE)
       for mb_node in pico_modbus_nodes:
+         print(f"\n\t[reading pico_airid: {pico_airid}]\n")
          self.__read_each_pico_node__(pico_airid, mb_node)
+         print("\t[done reading...]")
+         time.sleep(1)
 
    def __read_each_pico_node__(self, pico_airid, mb_node: et.Element):
       read_from = 0x00
@@ -57,13 +60,12 @@ class readRegisters(genDo):
       sndRecv: uartSendReceive = uartSendReceive(self.uart, rnrs, 1)
       sndRecv.do()
       self.__await_ack__(sndRecv)
-      time.sleep(0.02)
-      self.__await_rsp__(sndRecv)
+
 
    def __await_ack__(self, sndRecv: uartSendReceive):
       while sndRecv.status not in (uartStatus.TIMEOUT, uartStatus.DONE):
          time.sleep(readRegisters.DO_TTL_SECS / 8)
-         print("*", end="")
+         print(f"*{sndRecv.status};", end="")
       if sndRecv.status == uartStatus.TIMEOUT:
          pass
       if sndRecv.status == uartStatus.DONE:
