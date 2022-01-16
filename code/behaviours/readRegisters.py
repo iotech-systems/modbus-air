@@ -57,7 +57,7 @@ class readRegisters(genDo):
       sndRecv: uartSendReceive = uartSendReceive(self.uart, rnrs, 1)
       sndRecv.do()
       self.__await_ack__(sndRecv)
-      time.sleep_ms(20)
+      time.sleep(0.02)
       self.__await_rsp__(sndRecv)
 
    def __await_ack__(self, sndRecv: uartSendReceive):
