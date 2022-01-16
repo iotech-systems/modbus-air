@@ -72,7 +72,7 @@ class readRegisters(genDo):
       first_ack_secs = 2
       print(f"\t\t-> qry: @{pico_airid} + {node_adr}")
       sndRecv: uartSendReceive = uartSendReceive(self.uart, rnrs, first_ack_secs)
-      sndRecv.do(with_snd=False)
+      sndRecv.do(with_snd=True)
       # -- wait for ack from picobug --
       sndRecv.await_ack()
       rs.rsp_barr = sndRecv.response_buffer
