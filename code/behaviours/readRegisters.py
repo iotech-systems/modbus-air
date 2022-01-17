@@ -98,5 +98,5 @@ class readRegisters(genDo):
          # --
          rsp = rsp[1:-1]
          len = rsp[0]
-         buff = rsp[3:]
+         buff = rsp[1:]
          print(f"len: {len}; buff: {buff}")
