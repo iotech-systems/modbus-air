@@ -89,14 +89,17 @@ class readRegisters(genDo):
    def __process_results__(self, rset: t.List[readResults]):
       print("\n\t[__process_results__]\n")
       for item in rset:
-         pico_id = item.rsp_barr[5]
-         # -- greb with vts --
-         rsp = item.rsp_barr[16:-1]
-         if not radioMsg.test_vts(rsp):
-            print("bad vts")
-            continue
-         # --
-         rsp = rsp[1:-1]
-         len = rsp[0]
-         buff = rsp[2:]
-         print(f"len: {len}; buff: {buff}")
+         self.__per_result__(item)
+
+   def __per_result__(self, rs: readResults):
+      pico_id = rs.rsp_barr[5]
+      # -- grab with vts --
+      rsp = rs.rsp_barr[16:-1]
+      if not radioMsg.test_vts(rsp):
+         print("bad vts")
+         return
+      # --
+      rsp = rsp[1:-1]
+      len = rsp[0]
+      buff = rsp[2:]
+      print(f"len: {len}; buff: {buff}")
