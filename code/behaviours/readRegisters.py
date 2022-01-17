@@ -96,4 +96,7 @@ class readRegisters(genDo):
             print("bad vts")
             continue
          # --
-         print(f"RSP: {rsp[1:-1]}")
+         rsp = rsp[1:-1]
+         len = rsp[0]
+         buff = rsp[3:]
+         print(f"len: {len}; buff: {buff}")
