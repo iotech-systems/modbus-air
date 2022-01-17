@@ -90,5 +90,10 @@ class readRegisters(genDo):
       print("\n\t[__process_results__]\n")
       for item in rset:
          pico_id = item.rsp_barr[5]
-         rsp = item.rsp_barr[17:-2]
-         print(f"RSP: {rsp}")
+         # -- greb with vts --
+         rsp = item.rsp_barr[16:-1]
+         if not radioMsg.test_vts(rsp):
+            print("bad vts")
+            continue
+         # --
+         print(f"RSP: {rsp[1:-1]}")
