@@ -18,6 +18,10 @@ class readResults(object):
       self.rsp_code: int = 0
       self.rsp_barr: bytearray = None
 
+   def __repr__(self):
+      return f"ackOK: {self.ack_ok} - picobugID: {self.picobug_id} - modbusNodeID: {self.modbus_node_id}" \
+         f" - rsp_code: {self.rsp_code}\nrsp_bar: {self.rsp_barr}"
+
 
 class readRegisters(genDo):
 
@@ -99,6 +103,7 @@ class readRegisters(genDo):
          print("bad vts")
          return
       # --
+      print(rs)
       rsp = rsp[1:-1]
       len = rsp[0]
       buff = rsp[2:]
