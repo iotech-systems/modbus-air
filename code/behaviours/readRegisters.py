@@ -89,4 +89,6 @@ class readRegisters(genDo):
    def __process_results__(self, rset: t.List[readResults]):
       print("\n\t[__process_results__]\n")
       for item in rset:
-         print(f"RSP: {item.rsp_barr}")
+         pico_id = item.rsp_barr[5]
+         rsp = item.rsp_barr[17:-2]
+         print(f"RSP: {rsp}")
