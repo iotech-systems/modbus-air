@@ -55,5 +55,5 @@ class uartSendAckReceive(object):
       if ur.status == uartStatus.TIMEOUT:
          pass
       if ur.status == uartStatus.DONE:
-         print(f"__rec_msg__: {ur.buff_out}")
+         print(f"__rec_msg__: {ur.read_buffer}")
       # -- check msg type --

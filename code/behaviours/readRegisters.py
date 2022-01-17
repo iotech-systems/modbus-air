@@ -72,7 +72,7 @@ class readRegisters(genDo):
       # -- wait for ack from picobug --
       sndRecv.await_ack()
       # -- this buff should ba ack msg --
-      if not radioMsg.is_good_ack(pico_airid, msgid, rs.rsp_barr):
+      if not radioMsg.is_good_ack(pico_airid, msgid, sndRecv.response_buffer):
          print("BAD_ACK")
          rs.ack_ok = False
          return rs
@@ -82,7 +82,7 @@ class readRegisters(genDo):
       ur.do()
       while ur.status not in (uartStatus.TIMEOUT, uartStatus.DONE):
          time.sleep(0.01)
-      rs.rsp_barr = ur.buff_out
+      rs.rsp_barr = ur.read_buff
       print(f"RSP: {rs.rsp_barr}")
       return rs
 

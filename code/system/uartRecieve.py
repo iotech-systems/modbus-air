@@ -14,7 +14,7 @@ class uartReceive(object):
       self.uart = uart
       self.ttl = ttl
       self.timeout_flag = False
-      self.buff_out: bytearray = bytearray()
+      self.read_buffer: bytearray = bytearray()
       self.status = uartStatus.READY
       self.__chr_dly_secs = \
          round(((1 / (self.uart.baudrate / uartReceive.BYTE_BITS)) + uartReceive.OFFSET), 4)
@@ -24,6 +24,10 @@ class uartReceive(object):
       self.uart.reset_output_buffer()
       thread = threading.Thread(target=self.__do_thread__, args=())
       thread.start()
+
+   @property
+   def read_buff(self):
+      return self.read_buffer
 
    def __do_thread__(self):
       # -- callback --
@@ -45,7 +49,7 @@ class uartReceive(object):
          # -- read incoming ---
          self.status = uartStatus.READING
          while self.uart.in_waiting > 0:
-            self.buff_out.extend(self.uart.read(1))
+            self.read_buffer.extend(self.uart.read(1))
             time.sleep(self.__chr_dly_secs)
          # -- done reading ---
          self.status = uartStatus.DONE

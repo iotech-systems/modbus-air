@@ -8,7 +8,7 @@ class uartSendReceive(object):
 
    def __init__(self, uart: serial.Serial, barr: bytearray, timeout_secs=1):
       self.uart = uart
-      self.barr = barr
+      self.barr_out = barr
       self.with_send = True
       self.timeout_secs = timeout_secs
       self.do_thread: threading.Thread = None
@@ -45,8 +45,8 @@ class uartSendReceive(object):
          print(f"\n\tACK: {self.response_buffer}")
 
    def send(self):
-      print(f"sending: {self.barr}")
-      self.uart.write(self.barr)
+      print(f"sending: {self.barr_out}")
+      self.uart.write(self.barr_out)
 
    def __do_thread__(self):
       # -- with send --
