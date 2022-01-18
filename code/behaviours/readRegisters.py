@@ -114,7 +114,7 @@ class readRegisters(genDo):
       rp: reportBuffer = reportBuffer()
       print(f"rs.nodeoutput: {rs.nodeoutput}")
       rp.load_from_bytes(rs.nodeoutput)
-      print(rp.modbus_node)
+      print(f"\n[ {rp.modbus_node_atid} ]\n")
       if rp.error_code == 0:
          mb: memblock_reader = memblock_reader(self.xmlconf, rp)
          mb.load_from()
