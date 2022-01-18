@@ -72,12 +72,12 @@ class uartSendReceive(object):
          if self.on_timeout is not None:
             self.on_timeout()
       else:
-         # -- got rsp b4 ttl out --
          self.ttl_timer.cancel()
          while self.uart.in_waiting > 0:
             self.__rsp_buffer.extend(self.uart.read(1))
             time.sleep(self.__chr_dly_secs)
          self.__status = uartStatus.DONE
+         print(f"__rsp_buffer: {self.__rsp_buffer}")
          if self.on_response is not None:
             self.on_response(self.__rsp_buffer)
 
