@@ -111,4 +111,4 @@ class readRegisters(genDo):
       print(rs)
       print("\n")
       arr = rs.nodeoutput
-      print(arr)
+      print(arr[0])
