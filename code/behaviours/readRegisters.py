@@ -8,6 +8,7 @@ from system.consts import *
 from system.uartRecieve import uartReceive
 from system.uartSendReceive import uartSendReceive, uartStatus
 from radiolib.reportBuffer import reportBuffer
+from radiolib.radioUtils import radioUtils
 from omms.memblock_reader import memblock_reader
 
 
@@ -76,8 +77,8 @@ class readRegisters(genDo):
    def __read_each_modbus_node__(self, pico_airid, mb_node: et.Element) -> readResults:
       read_from = 0x00
       msgid: int = msgIDGen.get_id()
-      adr = mb_node.attrib["address"]
-      node_adr = f"@{adr}"
+      adr: int = int(mb_node.attrib["address"])
+      node_adr = radioUtils.modbus_node_to_atid(adr)
       rs: readResults = readResults(pico_airid, node_adr)
       rnrs: bytearray = radioMsg.new_msg(pico_airid, read_from, msgid
          , msgTypes.READ_NODE_REGS, bytearray(node_adr.encode()))
