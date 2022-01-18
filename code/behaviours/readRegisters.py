@@ -112,6 +112,7 @@ class readRegisters(genDo):
    def __per_result__(self, rs: readResults):
       # -- grab with vts --
       rp: reportBuffer = reportBuffer()
+      print(f"rs.nodeoutput: {rs.nodeoutput}")
       rp.load_from_bytes(rs.nodeoutput)
       print(rp.modbus_node)
       if rp.error_code == 0:
