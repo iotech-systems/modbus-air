@@ -111,6 +111,7 @@ class readRegisters(genDo):
       # -- grab with vts --
       rp: reportBuffer = reportBuffer()
       rp.load_from_bytes(rs.nodeoutput)
+      print(rp.modbus_node)
       if rp.error_code == 0:
          print(rp.barr)
       else:
