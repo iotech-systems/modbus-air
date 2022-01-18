@@ -34,6 +34,7 @@ class channelProcess(genProcess):
          self.__do__(doxml)
       return 0
 
+
    def __do__(self, xml: et.Element):
       action = xml.attrib["action"]
       idx = xml.attrib["index"]
