@@ -19,8 +19,8 @@ class readResults(object):
       self.rsp_barr: bytearray = None
 
    def __repr__(self):
-      return f"ackOK: {self.ack_ok} - picobugID: {self.picobugID}"\
-         f" - modbusNodeID: {self.modbusID} - rsp_code: {self.rsp_code}"\
+      return f"\nackOK: {self.ack_ok}\npicobugID: {self.picobugID}"\
+         f"\nmodbusNodeID: {self.modbusID}\nrsp_code: {self.rsp_code}"\
          f"\nnodeoutput: {self.nodeoutput}"
 
    @property
