@@ -103,7 +103,7 @@ class readRegisters(genDo):
       return rs
 
    def __process_results__(self, rset: t.List[readResults]):
-      print("\n\t[__process_results__]\n")
+      print("\n\t[ process_results ]\n")
       for item in rset:
          self.__per_result__(item)
 
