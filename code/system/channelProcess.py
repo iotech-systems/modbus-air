@@ -36,6 +36,9 @@ class channelProcess(genProcess):
 
    def __do__(self, xml: et.Element):
       action = xml.attrib["action"]
+      idx = xml.attrib["index"]
+      print(f"__do__: {idx}")
+      # -- do --
       if action == "BROADCAST_DATETIME":
          dtb = datetimeBroadcaster(uart=self.uart, xmlconf=self.xml)
          dtb.run()
