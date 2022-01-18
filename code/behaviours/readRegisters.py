@@ -12,15 +12,26 @@ from system.uartSendReceive import uartSendReceive, uartStatus
 class readResults(object):
 
    def __init__(self, picobugID: int, modbusID: str):
-      self.picobug_id = picobugID
-      self.modbus_node_id = modbusID
+      self.picobugID = picobugID
+      self.modbusID = modbusID
       self.ack_ok = True
       self.rsp_code: int = 0
       self.rsp_barr: bytearray = None
 
    def __repr__(self):
-      return f"ackOK: {self.ack_ok} - picobugID: {self.picobug_id} - modbusNodeID: {self.modbus_node_id}" \
-         f" - rsp_code: {self.rsp_code}\nrsp_bar: {self.rsp_barr}"
+      return f"ackOK: {self.ack_ok} - picobugID: {self.picobugID}"\
+         f" - modbusNodeID: {self.modbusID} - rsp_code: {self.rsp_code}"\
+         f"\nnodeoutput: {self.nodeoutput}"
+
+   @property
+   def nodeoutput(self):
+      barr = self.rsp_barr[16:-1]
+      if not radioMsg.test_vts(barr):
+         print("bad or no vts")
+         raise ValueError("BadOrNoVTs")
+      # --
+      barr_no_vts = barr[1:-1]
+      return barr_no_vts
 
 
 class readRegisters(genDo):
@@ -98,13 +109,4 @@ class readRegisters(genDo):
    def __per_result__(self, rs: readResults):
       pico_id = rs.rsp_barr[5]
       # -- grab with vts --
-      rsp = rs.rsp_barr[16:-1]
-      if not radioMsg.test_vts(rsp):
-         print("bad vts")
-         return
-      # --
       print(rs)
-      rsp = rsp[1:-1]
-      len = rsp[0]
-      buff = rsp[2:]
-      print(f"len: {len}; buff: {buff}")
