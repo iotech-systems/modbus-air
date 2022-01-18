@@ -24,7 +24,7 @@ class readResults(object):
          f"\nnodeoutput: {self.nodeoutput}"
 
    @property
-   def nodeoutput(self):
+   def nodeoutput(self) -> bytearray:
       barr = self.rsp_barr[16:-1]
       if not radioMsg.test_vts(barr):
          print("bad or no vts")
@@ -107,9 +107,8 @@ class readRegisters(genDo):
          self.__per_result__(item)
 
    def __per_result__(self, rs: readResults):
-      pico_id = rs.rsp_barr[5]
       # -- grab with vts --
       print(rs)
       print("\n")
-      print(rs.nodeoutput)
-      print(rs.nodeoutput[0])
+      arr = rs.nodeoutput
+      print(arr)
