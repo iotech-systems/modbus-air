@@ -111,4 +111,8 @@ class readRegisters(genDo):
       print(rs)
       print("\n")
       arr = rs.nodeoutput
-      print(arr[0])
+      buff_sz: int = arr[0]
+      print(f"buff_sz: {buff_sz}")
+      buff = arr[2:]
+      print(buff)
+      print(f"len buff: {len(buff)}")
