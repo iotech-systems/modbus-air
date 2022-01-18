@@ -1,0 +1,5 @@
+0x000E:2:flt:2:L1_Voltage
+0x0010:2:flt:2:L2_Voltage
+0x0012:2:flt:2:L3_Voltage
+0x0014:2:flt:2:GridFreqHz
+0x0034:2:flt:2:TotalPowerFactor

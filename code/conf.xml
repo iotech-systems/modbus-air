@@ -3,14 +3,13 @@
    <process id="100" procname="omms100" runfreq="2m" class="channelProcess.channelProcess">
       <uart dev="/dev/ttyUSB0" setpin="4" baud="2400" />
       <picobugs>
-         <picobug airid="0xa1" token="not-used">
+         <picobug airid="0x02" token="not-used">
             <modbus>
                <node address="36" model="orno516" />
-               <node address="34" model="orno516" />
                <node address="12" model="orno504" />
             </modbus>
          </picobug>
-         <picobug airid="0xa4" token="not-used">
+         <picobug airid="0x04" token="not-used">
             <modbus>
                <node address="12" model="orno504" />
             </modbus>

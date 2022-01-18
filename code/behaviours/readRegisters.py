@@ -8,6 +8,7 @@ from system.consts import *
 from system.uartRecieve import uartReceive
 from system.uartSendReceive import uartSendReceive, uartStatus
 from radiolib.reportBuffer import reportBuffer
+from omms.memblock_reader import memblock_reader
 
 
 class readResults(object):
@@ -113,6 +114,8 @@ class readRegisters(genDo):
       rp.load_from_bytes(rs.nodeoutput)
       print(rp.modbus_node)
       if rp.error_code == 0:
-         print(rp.barr)
+         mb: memblock_reader = memblock_reader(self.xmlconf, rp)
+         mb.load_from()
       else:
-         print(rp.error_msg)
+         print(f"err: {rp.error_code}\nmsg: {rp.error_msg}")
+         print(self.xmlconf)
