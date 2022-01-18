@@ -110,3 +110,5 @@ class readRegisters(genDo):
       pico_id = rs.rsp_barr[5]
       # -- grab with vts --
       print(rs)
+      print("\n")
+      print(rs.nodeoutput)
