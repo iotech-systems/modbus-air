@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <conf>
-   <process id="100" procname="omms100" runfreq="2m" class="channelProcess.channelProcess">
+   <process id="100" procname="omms100" runfreq="4m" class="channelProcess.channelProcess">
       <uart dev="/dev/ttyUSB0" setpin="4" baud="2400" />
       <picobugs>
          <!-- testing 161 -->
@@ -51,7 +51,7 @@
          </do>
       </behaviour>
    </process>
-   <process id="100" class="demoProcess.demoProcess">
+   <process id="103" class="demoProcess.demoProcess">
       <uart dev="/dev/ttyUSB0" setpin="4" baud="2400" />
       <picobugs>
          <picobug airid="0x0a" token="???">
