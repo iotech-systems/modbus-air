@@ -28,6 +28,7 @@ class channelProcess(genProcess):
             print(e)
 
    def __main__(self) -> int:
+      print("\n\n\t[ channelProcess ]\n")
       behaviours = self.xml.findall("behaviour/do")
       for doxml in behaviours:
          self.__do__(doxml)
