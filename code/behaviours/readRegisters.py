@@ -109,8 +109,9 @@ class readRegisters(genDo):
 
    def __per_result__(self, rs: readResults):
       # -- grab with vts --
-      print(rs)
-      print("\n")
       rp: reportBuffer = reportBuffer()
       rp.load_from_bytes(rs.nodeoutput)
-      print(rp)
+      if rp.error_code == 0:
+         print(rp.barr)
+      else:
+         print(rp.error_msg)
