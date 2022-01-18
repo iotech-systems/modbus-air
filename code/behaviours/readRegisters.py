@@ -7,6 +7,7 @@ import xml.etree.ElementTree as et
 from system.consts import *
 from system.uartRecieve import uartReceive
 from system.uartSendReceive import uartSendReceive, uartStatus
+from radiolib.reportBuffer import reportBuffer
 
 
 class readResults(object):
@@ -110,9 +111,6 @@ class readRegisters(genDo):
       # -- grab with vts --
       print(rs)
       print("\n")
-      arr = rs.nodeoutput
-      buff_sz: int = arr[0]
-      print(f"buff_sz: {buff_sz}")
-      buff = arr[2:]
-      print(buff)
-      print(f"len buff: {len(buff)}")
+      rp: reportBuffer = reportBuffer()
+      rp.load_from_bytes(rs.nodeoutput)
+      print(rp)
