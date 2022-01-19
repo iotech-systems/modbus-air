@@ -13,7 +13,7 @@ class memblock_reader(object):
 
    def __repr__(self):
       return f"picoid: {self.picoid}; nodeid: {self.rptbuff.modbus_node_atid};"\
-         f" node_dts: {self.rptbuff.node_dts}"
+         f" node_dts: {self.rptbuff.node_dts}; node_data: {self.rptbuff.node_data}"
 
    def init(self):
       pass
