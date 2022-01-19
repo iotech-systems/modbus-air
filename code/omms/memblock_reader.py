@@ -12,8 +12,8 @@ class memblock_reader(object):
       self.picoid = self.pico.attrib["airid"]
 
    def __repr__(self):
-      return f"picoid: {self.picoid}; nodeid: {self.rptbuff.modbus_node_atid};"
+      return f"picoid: {self.picoid}; nodeid: {self.rptbuff.modbus_node_atid};"\
+         f" node_dts: {self.rptbuff.node_dts}"
 
-   def load_from(self):
-      print(self.xmlconf.text)
-      print(self.rptbuff)
+   def init(self):
+      pass
