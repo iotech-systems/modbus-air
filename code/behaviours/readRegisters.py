@@ -112,9 +112,8 @@ class readRegisters(genDo):
    def __per_result__(self, rs: readResults):
       # -- grab with vts --
       rp: reportBuffer = reportBuffer()
-      print(f"rs.nodeoutput: {rs.nodeoutput}")
-      rp.load_from_bytes(rs.nodeoutput)
-      print(f"\n[ {rp.modbus_node_atid} ]\n")
+      rp.parse_bytes(rs.nodeoutput)
+      print(f"\t[ {rp.modbus_node_atid} ]")
       if rp.error_code == 0:
          mb: memblock_reader = memblock_reader(self.xmlconf, rp)
          mb.load_from()
