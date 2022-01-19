@@ -56,7 +56,7 @@ class readRegisters(genDo):
       # -- for each pico in air channel --
       for pico in picos:
          rset = self.__qry_picobug__(pico)
-         self.__process_results__(rset)
+         self.__process_results__(pico, rset)
       # -- end for each pico --
 
    def __qry_picobug__(self, pico: et.Element) -> t.List[readResults]:
@@ -103,18 +103,18 @@ class readRegisters(genDo):
       print(f"RSP: {rs.rsp_barr}")
       return rs
 
-   def __process_results__(self, rset: t.List[readResults]):
+   def __process_results__(self, pico: et.Element, rset: t.List[readResults]):
       print(f"\n\t[ process_results ~ count: {len(rset)} ]\n")
       for item in rset:
-         self.__per_result__(item)
+         self.__per_result__(pico, item)
 
-   def __per_result__(self, rs: readResults):
-      # -- grab with vts --
+   def __per_result__(self, pico: et.Element, rs: readResults):
       rp: reportBuffer = reportBuffer()
       rp.parse_bytes(rs.nodeoutput)
       print(f"\t[ {rp.modbus_node_atid} ]")
       if rp.error_code == 0:
-         mb: memblock_reader = memblock_reader(self.xmlconf, rp)
+         mb: memblock_reader = memblock_reader(pico, self.xmlconf, rp)
          mb.load_from()
+         print(mb)
       else:
          print(f"\terr: {rp.error_code} -- errmsg: {rp.error_msg}")
