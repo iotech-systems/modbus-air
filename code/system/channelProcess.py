@@ -30,6 +30,7 @@ class channelProcess(genProcess):
    def __main__(self) -> int:
       print("\n\n\t[ channelProcess ]\n")
       behaviours = self.xml.findall("behaviour/do")
+      print(f"[behaviour/do] count: {len(behaviours)}")
       for doxml in behaviours:
          self.__do__(doxml)
       return 0
