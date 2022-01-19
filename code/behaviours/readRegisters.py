@@ -113,6 +113,7 @@ class readRegisters(genDo):
       rp.parse_bytes(rs.nodeoutput)
       print(f"\t[ {rp.modbus_node_atid} ]")
       if rp.error_code == 0:
+         print("\n[ rp.error_code == 0 ]")
          mb: memblock_reader = memblock_reader(pico, self.xmlconf, rp)
          mb.load_from()
          print(mb)
