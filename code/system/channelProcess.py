@@ -36,20 +36,23 @@ class channelProcess(genProcess):
       return 0
 
    def __do__(self, xml: et.Element):
-      action = xml.attrib["action"]
-      idx = xml.attrib["index"]
-      print(f"\n[ __do__ behaviour: {idx} / {action} ]\n")
-      # -- do --
-      if action == "BROADCAST_DATETIME":
-         dtb = datetimeBroadcaster(uart=self.uart, xmlconf=self.xml)
-         dtb.run()
-      elif action == "SLEEP":
-         self.__sleep__(xml)
-      elif action == "PING_PONG":
-         pp: pingPong = pingPong(uart=self.uart, xmlconf=self.xml)
-         pp.run()
-      elif action == "READ_REGISTERS":
-         rr: readRegisters = readRegisters(uart=self.uart, xmlconf=self.xml)
-         rr.run()
-      else:
-         pass
+      try:
+         action = xml.attrib["action"]
+         idx = xml.attrib["index"]
+         print(f"\n[ __do__ behaviour: {idx} / {action} ]\n")
+         # -- do --
+         if action == "BROADCAST_DATETIME":
+            dtb = datetimeBroadcaster(uart=self.uart, xmlconf=self.xml)
+            dtb.run()
+         elif action == "SLEEP":
+            self.__sleep__(xml)
+         elif action == "PING_PONG":
+            pp: pingPong = pingPong(uart=self.uart, xmlconf=self.xml)
+            pp.run()
+         elif action == "READ_REGISTERS":
+            rr: readRegisters = readRegisters(uart=self.uart, xmlconf=self.xml)
+            rr.run()
+         else:
+            pass
+      except Exception as e:
+         print(f"e: {e}")
