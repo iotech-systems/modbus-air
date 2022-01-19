@@ -30,7 +30,6 @@ class readResults(object):
    def nodeoutput(self) -> bytearray:
       barr = self.rsp_barr[16:-1]
       if not radioMsg.test_vts(barr):
-         print("bad or no vts")
          raise ValueError("BadOrNoVTs")
       # --
       barr_no_vts = barr[1:-1]
@@ -118,5 +117,4 @@ class readRegisters(genDo):
          mb: memblock_reader = memblock_reader(self.xmlconf, rp)
          mb.load_from()
       else:
-         print(f"err: {rp.error_code}\nmsg: {rp.error_msg}")
-         print(self.xmlconf)
+         print(f"\terr: {rp.error_code} -- errmsg: {rp.error_msg}")
