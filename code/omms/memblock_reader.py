@@ -17,6 +17,7 @@ class memblock_reader(object):
          f" node_dts: {self.rptbuff.node_dts}; node_data: {self.rptbuff.node_data}"
 
    def init(self):
+      print(f"init: {self.rptbuff.node_data}")
       arr = self.rptbuff.node_data.split(asciitable.RS)
       for a in arr:
          print(a)
