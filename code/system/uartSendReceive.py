@@ -42,7 +42,7 @@ class uartSendReceive(object):
       if self.status == uartStatus.TIMEOUT:
          print("\tACK_TIMEOUT_REACHED")
       if self.status == uartStatus.DONE:
-         print(f"\t[ ACK: {self.response_buffer} ]")
+         print(f"\t[ uartStatus.DONE ]")
 
    def send(self):
       print(f"sending: {self.barr_out}")
