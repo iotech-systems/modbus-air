@@ -23,3 +23,4 @@ class memblock_reader(object):
       while rval is not None:
          rval = sysutils.get_reading(rval[0], self.rptbuff.node_data)
          print(rval)
+         rval[0] += 1
