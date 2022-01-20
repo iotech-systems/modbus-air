@@ -1,5 +1,6 @@
 
 from smtplib import SMTP
+from radiolib.asciitable import asciitable
 
 
 SMTP_SERVER = ""
@@ -15,3 +16,10 @@ class sysutils(object):
    @staticmethod
    def send_email(title, msg):
       print(f"send_email: {msg}")
+
+   @staticmethod
+   def get_reading(sloc: int, barr: bytearray) -> [None, (int, bytearray)]:
+      for idx in range(sloc, len(barr)):
+         if barr[idx] == asciitable.RS:
+            return idx, barr[sloc:idx]
+      return None

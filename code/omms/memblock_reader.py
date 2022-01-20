@@ -2,6 +2,7 @@
 import xml.etree.ElementTree as et
 from radiolib.reportBuffer import reportBuffer
 from radiolib.asciitable import asciitable
+from system.sysutils import sysutils
 
 
 class memblock_reader(object):
@@ -19,5 +20,5 @@ class memblock_reader(object):
    def init(self):
       print(f"init: {self.rptbuff.node_data}")
       arr = self.rptbuff.node_data.split(asciitable.RS)
-      for a in arr:
-         print(a)
+      rval = sysutils.get_reading(0, arr)
+      print(rval)
