@@ -46,7 +46,7 @@
          </do>
          <do index="5" action="SLEEP">
             <args>
-               <arg name="delay" value="2m" />
+               <arg name="delay" value="40s" />
             </args>
          </do>
       </behaviour>
