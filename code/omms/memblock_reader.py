@@ -35,5 +35,7 @@ class memblock_reader(object):
       # -- end while --
 
    def load_node_regs_file(self):
-      nodeid = self.rptbuff.modbus_node_atid
-      print(f"nodeid: {nodeid}")
+      # nodeid: @036
+      print(f"nodeid: {self.rptbuff.modbus_node_id}")
+      """xpath = "modbus/node[@address="36"
+      model = "orno516" / >"""
