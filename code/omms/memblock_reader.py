@@ -23,5 +23,6 @@ class memblock_reader(object):
       while rval is not None:
          # --- return sloc, idx, barr[sloc:idx] ---
          idx = rval[1]
-         rval = sysutils.get_reading((idx+1), self.rptbuff.node_data)
-         print(rval)
+         rval = sysutils.get_next((idx + 1), self.rptbuff.node_data)
+         if rval is None:
+            rval = sysutils.get_last(idx, self.rptbuff.node_data)
