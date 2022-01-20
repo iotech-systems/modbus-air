@@ -67,11 +67,11 @@ class memblock_reader(object):
 
    def print_registers(self):
       for r in self.registers.values():
-         print(r)
+         print(f"\t -> {r}")
 
    def report(self):
       dts: str = self.rptbuff.node_dts.decode()
-      print(f"dts: {dts}")
+      print(f"\t -> dts: {dts}")
       self.print_registers()
 
    def __proc_read__(self, barr: bytearray):
