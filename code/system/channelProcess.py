@@ -25,8 +25,9 @@ class channelProcess(genProcess):
             self.__main__()
             now = datetime.datetime.now()
             nxt = now + datetime.timedelta(seconds=delay_secs)
-            print(f"nxt run @: {nxt}")
+            print(f"\n\t[ nxt run @: {nxt} ]")
             time.sleep(delay_secs)
+            print(f"\t[ running: {datetime.datetime.now()} ]")
          except Exception as e:
             print(e)
 
