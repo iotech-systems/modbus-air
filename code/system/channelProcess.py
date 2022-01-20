@@ -1,4 +1,4 @@
-
+import datetime
 import time, setproctitle
 import xml.etree.ElementTree as et
 from system.genProcess import genProcess
@@ -18,12 +18,15 @@ class channelProcess(genProcess):
       procname = self.xml.attrib["procname"]
       setproctitle.setproctitle(procname)
       runfreq = self.xml.attrib["runfreq"].upper()
-      delay = self.__get_delay__(runfreq)
+      delay_secs = self.__get_delay__(runfreq)
       # -- run --
       while True:
          try:
             self.__main__()
-            time.sleep(delay)
+            now = datetime.datetime.now()
+            nxt = now + datetime.timedelta(seconds=delay_secs)
+            print(f"nxt run @: {nxt}")
+            time.sleep(delay_secs)
          except Exception as e:
             print(e)
 
