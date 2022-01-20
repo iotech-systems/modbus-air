@@ -69,6 +69,10 @@ class memblock_reader(object):
       for r in self.registers.values():
          print(r)
 
+   def report(self):
+      print(f"\ndts: {self.rptbuff.node_dts}")
+      self.process_reads_buffer()
+
    def __proc_read__(self, barr: bytearray):
       # print(barr)
       adr: str = barr[2][:6].decode()

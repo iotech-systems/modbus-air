@@ -117,6 +117,7 @@ class readRegisters(genDo):
          mb.parse_read_results()
          mb.load_node_regs_file()
          mb.process_reads_buffer()
-         mb.print_registers()
+         # mb.print_registers()
+         mb.report()
       else:
          print(f"\terr: {rp.error_code} -- errmsg: {rp.error_msg}")
