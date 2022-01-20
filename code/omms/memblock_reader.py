@@ -54,12 +54,12 @@ class memblock_reader(object):
       with open(model_file, "r") as f:
          lns = f.readlines()
       self.reg_lns = [ln.strip() for ln in lns if ln.startswith("0x")]
-      print(self.reg_lns)
+      # print(self.reg_lns)
       for ln in self.reg_lns:
          reg: register = register(ln)
          self.registers[reg.adr] = reg
       # -- -- -- --
-      print(self.registers)
+      # print(self.registers)
 
    def process_reads_buffer(self):
       for read in self.reads_buffer:
@@ -67,6 +67,6 @@ class memblock_reader(object):
 
    def __proc_read__(self, barr: bytearray):
       print(barr)
-      adr, val = str(barr[2][:6]), barr[2][7:]
+      adr: str = barr[2][:5].decode()
+      val: bytearray = barr[2][7:]
       print([adr, val])
-
