@@ -18,11 +18,9 @@ class sysutils(object):
       print(f"send_email: {msg}")
 
    @staticmethod
-   def get_reading(sloc: int, barr: bytearray) -> [None, (int, bytearray)]:
+   def get_reading(sloc: int, barr: bytearray) -> [None, (int, int, bytearray)]:
       for idx in range(sloc, len(barr)):
          if barr[idx] == asciitable.RS:
-            return idx, barr[sloc:idx]
-         else:
-            return None, barr[sloc:]
+            return sloc, idx, barr[sloc:idx]
       # -- not found --
       return None
