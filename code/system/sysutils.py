@@ -26,5 +26,5 @@ class sysutils(object):
       return None
 
    @staticmethod
-   def get_last(sloc: int, barr: bytearray) -> [None, bytearray]:
-      return sloc, barr[sloc:]
+   def get_last(sloc: int, barr: bytearray) -> [None, (int, int, bytearray)]:
+      return sloc, 0, barr[sloc:]
