@@ -22,7 +22,7 @@ class memblock_reader(object):
          f" node_dts: {self.rptbuff.node_dts}; node_data: {self.rptbuff.node_data}"
 
    def parse_read_results(self):
-      print(f"process_read_results: {self.rptbuff.node_data}")
+      # print(f"process_read_results: {self.rptbuff.node_data}")
       rval = (0, -1, None)
       # -- start while --
       while rval is not None:
@@ -71,7 +71,7 @@ class memblock_reader(object):
 
    def report(self):
       dts: str = self.rptbuff.node_dts.decode()
-      print(dts)
+      print(f"dts: {dts}")
       self.print_registers()
 
    def __proc_read__(self, barr: bytearray):
