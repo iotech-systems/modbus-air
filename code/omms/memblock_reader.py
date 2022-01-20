@@ -1,4 +1,4 @@
-
+import os.path
 import xml.etree.ElementTree as et
 from radiolib.reportBuffer import reportBuffer
 from radiolib.asciitable import asciitable
@@ -13,6 +13,7 @@ class memblock_reader(object):
       self.rptbuff = rp
       self.picoid = self.pico.attrib["airid"]
       self.reads_buffer = []
+      self.registers = []
 
    def __repr__(self):
       return f"picoid: {self.picoid}; nodeid: {self.rptbuff.modbus_node_atid};"\
@@ -38,5 +39,17 @@ class memblock_reader(object):
       nid = self.rptbuff.modbus_node_id
       xpath = f"modbus/node[@address=\"{nid}\"]"
       elmt = self.pico.find(xpath)
-      print(elmt)
-      print(elmt.attrib["model"])
+      if elmt is None:
+         print(f"NodeNotFound: {nid}")
+         return
+      # -- -- -- --
+      model = elmt.attrib["model"]
+      model_file = f"meters/{model}.regs"
+      if not os.path.exists(model_file):
+         print(f"FileNotFound: {model_file}")
+         return
+      # -- -- -- --
+      with open(model_file, "r") as f:
+         lns = f.readlines()
+      self.registers = [ln for ln in lns if ln.startswith("0x")]
+      print(self.registers)
