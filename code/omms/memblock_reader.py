@@ -32,5 +32,6 @@ class memblock_reader(object):
             buff.append(rval)
             rval = None
       # -- print --
+      print(f"\n\ndts: {self.rptbuff.node_dts}")
       for b in buff:
          print(b)
