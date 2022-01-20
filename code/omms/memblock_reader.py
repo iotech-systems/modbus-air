@@ -67,6 +67,6 @@ class memblock_reader(object):
 
    def __proc_read__(self, barr: bytearray):
       print(barr)
-      adr, val = barr[2][:5], barr[2][5:]
+      adr, val = str(barr[2][:6]), barr[2][7:]
       print([adr, val])
 
