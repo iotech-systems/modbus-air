@@ -24,7 +24,7 @@ class register(object):
    def set_reading(self, barr: bytearray):
       self.reading.extend(barr)
       if self.ntype == "flt":
-         self.flt_val = struct.unpack(">H", self.reading)
+         self.flt_val = struct.unpack(">f", self.reading)
       elif self.ntype == "int":
          self.int_val = struct.unpack(">I", self.reading)
       else:
