@@ -3,6 +3,7 @@ import xml.etree.ElementTree as et
 from radiolib.reportBuffer import reportBuffer
 from radiolib.asciitable import asciitable
 from system.sysutils import sysutils
+from system.register import register
 
 
 class memblock_reader(object):
@@ -13,7 +14,8 @@ class memblock_reader(object):
       self.rptbuff = rp
       self.picoid = self.pico.attrib["airid"]
       self.reads_buffer = []
-      self.registers = []
+      self.reg_lns = []
+      self.registers = {}
 
    def __repr__(self):
       return f"picoid: {self.picoid}; nodeid: {self.rptbuff.modbus_node_atid};"\
@@ -51,5 +53,10 @@ class memblock_reader(object):
       # -- -- -- --
       with open(model_file, "r") as f:
          lns = f.readlines()
-      self.registers = [ln for ln in lns if ln.startswith("0x")]
+      self.reg_lns = [ln.strip() for ln in lns if ln.startswith("0x")]
+      print(self.reg_lns)
+      for ln in self.reg_lns:
+         reg: register = register(ln)
+         self.registers[reg.adr] = reg
+      # -- -- -- --
       print(self.registers)
