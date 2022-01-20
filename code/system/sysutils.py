@@ -19,6 +19,7 @@ class sysutils(object):
 
    @staticmethod
    def get_reading(sloc: int, barr: bytearray) -> [None, (int, bytearray)]:
+      print("get_reading...")
       __rs = bytearray(asciitable.RS)
       for idx in range(sloc, len(barr)):
          if barr[idx] == __rs:
