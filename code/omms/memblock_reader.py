@@ -18,6 +18,7 @@ class memblock_reader(object):
          f" node_dts: {self.rptbuff.node_dts}; node_data: {self.rptbuff.node_data}"
 
    def init(self):
+      buff = []
       print(f"init: {self.rptbuff.node_data}")
       rval = (0, -1, None)
       while rval is not None:
@@ -25,9 +26,11 @@ class memblock_reader(object):
          idx = rval[1]
          rval = sysutils.get_next((idx+1), self.rptbuff.node_data)
          if rval is not None:
-            print(rval)
+            buff.append(rval)
          else:
             rval = sysutils.get_last((idx+1), self.rptbuff.node_data)
-            print(rval)
-         # -- print --
-
+            buff.append(rval)
+            rval = None
+      # -- print --
+      for b in buff:
+         print(b)
