@@ -24,7 +24,7 @@
          </do>
          <do index="1" action="SLEEP">
             <args>
-               <arg name="delay" value="20s" />
+               <arg name="delay" value="5s" />
             </args>
          </do>
          <do index="2" action="BROADCAST_DATETIME">
@@ -36,7 +36,7 @@
          </do>
          <do index="3" action="SLEEP">
             <args>
-               <arg name="delay" value="20s" />
+               <arg name="delay" value="5s" />
             </args>
          </do>
          <do index="4" action="READ_REGISTERS">
@@ -46,7 +46,7 @@
          </do>
          <do index="5" action="SLEEP">
             <args>
-               <arg name="delay" value="6m" />
+               <arg name="delay" value="8m" />
             </args>
          </do>
       </behaviour>
