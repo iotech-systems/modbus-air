@@ -19,5 +19,7 @@ class memblock_reader(object):
 
    def init(self):
       print(f"init: {self.rptbuff.node_data}")
-      rval = sysutils.get_reading(0, self.rptbuff.node_data)
-      print(rval)
+      rval = (0, None)
+      while rval is not None:
+         rval = sysutils.get_reading(rval[0], self.rptbuff.node_data)
+         print(rval)
