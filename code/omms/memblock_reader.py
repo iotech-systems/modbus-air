@@ -12,26 +12,28 @@ class memblock_reader(object):
       self.xmlconf = xmlconf
       self.rptbuff = rp
       self.picoid = self.pico.attrib["airid"]
+      self.reads_buffer = []
 
    def __repr__(self):
       return f"picoid: {self.picoid}; nodeid: {self.rptbuff.modbus_node_atid};"\
          f" node_dts: {self.rptbuff.node_dts}; node_data: {self.rptbuff.node_data}"
 
-   def init(self):
-      buff = []
-      print(f"init: {self.rptbuff.node_data}")
+   def process_read_results(self):
+      print(f"process_read_results: {self.rptbuff.node_data}")
       rval = (0, -1, None)
+      # -- start while --
       while rval is not None:
-         # --- return sloc, idx, barr[sloc:idx] ---
+         # -- return sloc, idx, barr[sloc:idx] --
          idx = rval[1]
          rval = sysutils.get_next((idx+1), self.rptbuff.node_data)
          if rval is not None:
-            buff.append(rval)
+            self.reads_buffer.append(rval)
          else:
             rval = sysutils.get_last((idx+1), self.rptbuff.node_data)
-            buff.append(rval)
+            self.reads_buffer.append(rval)
             rval = None
-      # -- print --
-      print(f"\n\ndts: {self.rptbuff.node_dts}")
-      for b in buff:
-         print(b)
+      # -- end while --
+
+   def load_node_regs_file(self):
+      nodeid = self.rptbuff.modbus_node_atid
+      print(f"nodeid: {nodeid}")

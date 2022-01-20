@@ -1,3 +1,5 @@
+# -- address, size, type, label --
+# system only load lines starting with 0x...
 0x000E:2:flt:2:L1_Voltage
 0x0010:2:flt:2:L2_Voltage
 0x0012:2:flt:2:L3_Voltage
