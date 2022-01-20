@@ -21,7 +21,7 @@ class memblock_reader(object):
       return f"picoid: {self.picoid}; nodeid: {self.rptbuff.modbus_node_atid};"\
          f" node_dts: {self.rptbuff.node_dts}; node_data: {self.rptbuff.node_data}"
 
-   def process_read_results(self):
+   def parse_read_results(self):
       print(f"process_read_results: {self.rptbuff.node_data}")
       rval = (0, -1, None)
       # -- start while --
@@ -60,3 +60,10 @@ class memblock_reader(object):
          self.registers[reg.adr] = reg
       # -- -- -- --
       print(self.registers)
+
+   def process_reads_buffer(self):
+      for read in self.reads_buffer:
+         self.__proc_read__(read)
+
+   def __proc_read__(self, barr: bytearray):
+      print(barr)
