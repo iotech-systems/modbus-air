@@ -22,5 +22,7 @@ class sysutils(object):
       for idx in range(sloc, len(barr)):
          if barr[idx] == asciitable.RS:
             return idx, barr[sloc:idx]
+         else:
+            return None, barr[sloc:]
       # -- not found --
       return None
