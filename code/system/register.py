@@ -17,8 +17,8 @@ class register(object):
       self.int_val: int = None
 
    def __repr__(self):
-      return f"adr: {self.adr}; sz: {self.size}; tp: {self.ntype};\n" \
-         f" dcpnt: {self.dcpnt}; lbl: {self.label};\nint: {self.int_val};" \
+      return f"adr: {self.adr}; sz: {self.size}; tp: {self.ntype};" \
+         f" dcpnt: {self.dcpnt}; lbl: {self.label}; int: {self.int_val};" \
          f" flt: {self.flt_val}"
 
    def set_reading(self, barr: bytearray):
